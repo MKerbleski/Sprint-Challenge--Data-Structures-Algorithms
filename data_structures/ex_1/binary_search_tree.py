@@ -51,10 +51,14 @@ class BinarySearchTree:
     }
   
     level = 0
-   
-    return self._inner_(self, level)
+    if self.value != None:
+      data[level].append(self.value)
+      self._inner_(level)
+    else:
+      print('no value')
 
     [cb(i) for i in queue]
+    return queue
     #go left first than right
     #then repeat with children of the left 
       #followed by children of the right 
@@ -63,27 +67,19 @@ class BinarySearchTree:
 
   def _inner_(self, level):
     print('\ninner level', level)
-    if self.value != None:
-      data[level].append(self.value)
-      print("data", data)
-      if self.left != None:
-        return self.left.inner(level +1)
-      if self.right != None:
-        return self.right.inner(level +1)
-        # queue.append(self.right.value)
-      print(self.left.value)
-      if self.left.left:
-        queue.append(self.left.left.value)
-      if self.left.right != None:
-        queue.append(self.left.right.value)
-      if self.right.left != None:
-        queue.append(self.right.left.value)
-      if self.right.right != None:
-        queue.append(self.right.right.value)
-      if self.right != None:
-        print('b')
-      else:
-        print("self.left.left.value none")
+    print("data", data)
+    if self.left != None:
+      data[level+1].append(self.left.value)
+    if self.right != None:
+      data[level+1].append(self.right.value)
+      return self.right._inner_(level +1)
+      # queue.append(self.right.value)
+    print(self.left.value)
+    if self.left.left or self.left.right:
+      self.left._inner_(level+1)
+    if self.right.left or self.right.right:
+      self.right._inner_(level+1)
+      
 
 
   def insert(self, value):
